@@ -24,10 +24,4 @@ public class LaserController : MonoBehaviour
             Destroy(other);
         }
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("particle OnTriggerEnter => " + other.name);
-
-    }
 }

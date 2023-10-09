@@ -68,16 +68,16 @@ public class FireControl_ION_Turret : MonoBehaviour
             gyroscope.transform.rotation = Quaternion.Slerp(
                 gyroscope.transform.rotation, 
                 lookRotation, 
-                20 * Time.deltaTime);
+                10 * Time.deltaTime);
 
             rotorBody.transform.rotation = Quaternion.Slerp(
-                rotorBody.transform.rotation, lookRotation, 20 * Time.deltaTime);
+                rotorBody.transform.rotation, lookRotation, 10 * Time.deltaTime);
 
         } 
         if (!isFiring)
         {
             isFiring = true;
-            StartCoroutine(WaitForAndFire(Random.Range(.5f, .8f)));
+            StartCoroutine(WaitForAndFire(Random.Range(.9f, 1.5f)));
         }
     }
 

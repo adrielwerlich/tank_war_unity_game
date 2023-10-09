@@ -12,6 +12,5 @@ public class LaserMovement : MonoBehaviour
     void Update()
     {
         transform.position += transform.forward * Time.deltaTime * speed;
-
     }
 }

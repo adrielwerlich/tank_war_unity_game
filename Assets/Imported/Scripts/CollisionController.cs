@@ -50,7 +50,7 @@ public class CollisionController : MonoBehaviour
         {
             float forceMultiplier = useHitForce ? hitForce : Random.Range(rangeMin, rangeMax);
             rb.AddForce(hitDirection * forceMultiplier, ForceMode.Impulse);
-            float damageValue = Random.Range(.3f, .10f);
+            float damageValue = Random.Range(.2f, .8f);
             damageController.Get_Damage(damageValue);
             //healthBarController.Damage(damageValue);
         }

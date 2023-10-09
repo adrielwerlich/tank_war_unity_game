@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 2363258}
   - component: {fileID: 6545464}
   - component: {fileID: 11482200}
+  - component: {fileID: 3184176641124303623}
+  - component: {fileID: 6248634838479219924}
   m_Layer: 0
   m_Name: Hedge_A
   m_TagString: Finish
@@ -112,3 +114,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   brokenPrefab: {fileID: 158412, guid: 76642ad27458c924b9bfd516ae36ea9e, type: 3}
   lagTime: 0.1
+--- !u!65 &3184176641124303623
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131336}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 3.6000032, z: 8.0199995}
+  m_Center: {x: 0, y: 1.7999983, z: 0}
+--- !u!54 &6248634838479219924
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131336}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0

@@ -29,7 +29,11 @@ namespace ChobiAssets.KTP
 
         void OnTriggerEnter(Collider collider)
         {
-            if (isLiving && collider.isTrigger == false)
+            if (collider.name.Contains("Laser"))
+            {
+                Destroy(collider.gameObject);
+            }
+            if (!collider.name.Contains("Hedge") && isLiving && collider.isTrigger == false)
             {
                 StartCoroutine("Broken");
             }
