@@ -18,8 +18,8 @@ namespace ChobiAssets.KTP
 
 
         Transform thisTransform;
-        Transform targetTranform;
-        float offset;
+        [SerializeField] private Transform targetTranform;
+        [SerializeField] private float offset;
 
 
         [HideInInspector] public static Camera_Manager_CS instance;
@@ -62,9 +62,12 @@ namespace ChobiAssets.KTP
         public void Set_Follow_Target(Transform targetTranform, float offset)
         { // Called from "ID_Control_CS".
 
-            // Store the value.
-            this.targetTranform = targetTranform;
-            this.offset = offset;
+            if (!this.targetTranform)
+            {
+                // Store the value.
+                this.targetTranform = targetTranform;
+                this.offset = offset;
+            }
 
             // Set the angles.
             var currentAngles = thisTransform.eulerAngles;

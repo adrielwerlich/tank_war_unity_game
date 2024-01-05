@@ -23,11 +23,12 @@ public class PatrollingAgent : MonoBehaviour
     private float movementRadius;
     private bool isAttacking = false;
     private float movementUpdateDuration;
-    private float attackRadius;
+    [SerializeField] private float attackRadius = 80f;
     private float attackUpdateDuration;
 
     public static event Action<Vector3> HitPlayer;
 
+    [SerializeField] private float rotationSpeed;
 
 
     void Start()
@@ -43,11 +44,11 @@ public class PatrollingAgent : MonoBehaviour
         attackUpdateDuration = Random.Range(2f, 5f);
         attackUpdateTimer = attackUpdateDuration;
         hitUpdateDuration = Random.Range(.3f, .6f);
+        rotationSpeed = Random.Range(2f, 3f);
         hitUpdateTimer = hitUpdateDuration;
 
         enemyAnimator = GetComponent<Animator>();
-
-        MoveAroundStart();
+        // this.gameObject.name = "Enemy " + Random.Range(1, 1000);
     }
 
     void Update()
@@ -60,12 +61,15 @@ public class PatrollingAgent : MonoBehaviour
             attackUpdateTimer = attackUpdateDuration;
             SearchPlayer();
         }
+        
         if (
-            agent != null 
+            agent != null
+            && agent.isOnNavMesh
             && isPatrolling 
             && !isAttacking 
             && !agent.pathPending 
-            && agent.remainingDistance < 0.1f)
+            && agent.remainingDistance < 0.1f
+        )
         {
             isPatrolling = false;
             // If reached the patrol point, wait for a delay and then patrol to the next point
@@ -102,12 +106,15 @@ public class PatrollingAgent : MonoBehaviour
         {
             if (hit.transform.tag.Contains("Player"))
             {
-                
-                agent.SetDestination(hit.transform.position);
                 isAttacking = true;
                 if (agent.stoppingDistance == 0f)
                 {
                     agent.stoppingDistance = Random.Range(40f, 80f);
+                }
+                if (agent != null && agent.enabled)
+                {
+                    //Debug.Log("this name => " + this.gameObject.name);
+                    agent.SetDestination(hit.transform.position);
                 }
 
                 float targetDistance = Vector3.Distance(transform.position, hit.transform.position);
@@ -144,11 +151,22 @@ public class PatrollingAgent : MonoBehaviour
         }
     }
 
-    private void FaceEnemy(Transform enemy)
+
+    void FaceEnemy(Transform enemy)
     {
         // Rotate to face the player
         Vector3 directionToPlayer = enemy.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 1 * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
     }
+
+    //void OnDrawGizmos()
+    //{
+    //    // Use the color property to set the Gizmo color
+    //    Gizmos.color = Color.red;
+
+    //    // Draw a wireframe sphere with the same center and radius as your attack radius
+    //    Gizmos.DrawWireSphere(transform.position, attackRadius);
+    //}
+
 }

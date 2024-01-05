@@ -1,16 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Jobs.LowLevel.Unsafe;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class Target : MonoBehaviour
 {
+    [SerializeField] private AudioSource explosionSound;
+
     private GameObject bombExplosionEffect1;
     private GameObject bombExplosionEffect2;
     private GameObject healingHeart;
 
     private int hitsToDestroy;
     private bool isLaserTurret;
+    private string sceneName;
 
     void Start()
     {
@@ -18,24 +19,19 @@ public class Target : MonoBehaviour
         bombExplosionEffect2 = Resources.Load<GameObject>("Explosions/Explosion_A");
         healingHeart = Resources.Load<GameObject>("HeartPackage");
 
+        explosionSound = GameObject.Find("ExplosionSound").GetComponent<AudioSource>();
+
         isLaserTurret = this.name.Contains("Laser_Turret");
         hitsToDestroy = Random.Range(2,8);
+        sceneName = SceneManager.GetActiveScene().name;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log(this.name);
+        //Debug.Log("enemy colision with => " + other.name);
 
         if (other.name.Equals("Bullet(Clone)"))
         {
-
-            //if (!this.name.Contains("Laser_Turret"))
-            //{
-            //    DestroySequence();
-            //}
-            //else
-            //{
-            //}
             hitsToDestroy--;
             if (hitsToDestroy == 0)
             {
@@ -46,7 +42,12 @@ public class Target : MonoBehaviour
             {
                 makeExplosionEffect(2);
             }
-
+             
+        
+            if (sceneName == "Town3_crab_player")
+            {
+                Destroy(other.gameObject);
+            }
         }
     }
 
@@ -62,6 +63,7 @@ public class Target : MonoBehaviour
     private void DestroySequence()
     {
         GameObject explosion = makeExplosionEffect(1);
+        explosionSound.Play();
         Destroy(this.gameObject);
         Destroy(explosion, 8f);
     }

@@ -15,7 +15,7 @@ namespace ChobiAssets.KTP
 		 * "Turret_Control_CS" and "Cannon_Control_CS" scripts rotate the turret and cannon referring to this variables.
 		*/
 
-		
+
         Turret_Control_CS turretControlScript;
         Cannon_Control_CS cannonControlScript;
         [HideInInspector] public bool useAutoTurn; // Referred to from "Turret_Control_CS" and "Cannon_Control_CS".

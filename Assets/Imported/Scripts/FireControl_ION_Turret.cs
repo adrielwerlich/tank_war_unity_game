@@ -1,11 +1,14 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FireControl_ION_Turret : MonoBehaviour
 {
     private Animation _turretAnimation;
     private ParticleSystem _laserBeam;
     [SerializeField] private ParticleSystem[] _laserBeamTypes;
+    [SerializeField] private GameObject cannonTip;
+
 
     private Transform player;  // The player's transform
     [SerializeField] private float maxAimRange = 10f;  // Maximum aiming range for the turret
@@ -13,13 +16,23 @@ public class FireControl_ION_Turret : MonoBehaviour
     private Transform rotorBody;
 
     private bool isFiring = false;
-    // Start is called before the first frame update
+    private string sceneName;
     void Start()
     {
         _turretAnimation = GetComponent<Animation>();
         int randomType = Random.Range(0, _laserBeamTypes.Length - 1);
         _laserBeam = _laserBeamTypes[randomType].GetComponent<ParticleSystem>();
-        player = GameObject.Find("MainBody").transform;
+
+        sceneName = SceneManager.GetActiveScene().name;
+        
+        if (sceneName == "Town3_crab_player")
+        {
+            player = GameObject.Find("PA_Warrior_Player").transform;
+        }
+        else
+        {
+            player = GameObject.Find("MainBody").transform;
+        }
 
         gyroscope = transform.Find("Gyroscope");
         rotorBody= gyroscope .transform.Find("Rotor_Body");
@@ -35,7 +48,35 @@ public class FireControl_ION_Turret : MonoBehaviour
     private void FireWeapon()
     {
         _turretAnimation.Play();
-        _laserBeam.Play();
+        if (sceneName == "Town3_crab_player")
+        {
+            int rocketType = Random.Range(0, 30);
+            string rocketOption = $"{(rocketType < 10 ? "0" : "")}{rocketType}";
+            string path = $"Rockets Missiles and Bombs/Prefabs/red/Rocket{rocketOption}_red";
+
+            GameObject missile = Resources.Load<GameObject>(path);
+
+            if (missile != null)
+            {
+                var go = Instantiate(
+                    missile,
+                    cannonTip.transform.position,
+                    cannonTip.transform.rotation
+                );
+                Vector3 initialScale = go.transform.localScale;
+
+                Vector3 newScale = initialScale * 0.3f;
+
+                go.transform.localScale = newScale;
+
+                go.transform.Rotate(90.0f, 0.0f, 0.0f);
+            }
+
+        }
+        else
+        {
+            _laserBeam.Play();
+        }
         StartCoroutine(WaitForAnimation(Random.Range(.2f,.6f)));
     }
 
@@ -45,7 +86,6 @@ public class FireControl_ION_Turret : MonoBehaviour
         {
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-            // Check if the player is within the maximum aiming range
             if (distanceToPlayer <= maxAimRange)
             {
                 AimAtPlayer();
